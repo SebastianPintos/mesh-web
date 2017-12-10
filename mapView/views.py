@@ -11,9 +11,4 @@ def want_see(request, node_name):
     return HttpResponse(response % node_name)
 
 def map(request):
-    something = "Hello Lucas"
-    template = loader.get_template('mapView/mapView.html')
-    context = {
-        'something' : something,
-    }
-    return HttpResponse(template.render(context, render))
+    return render(request, 'mapView/mapView.html')
