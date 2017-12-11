@@ -1,12 +1,17 @@
 {% load leaflet_tags %}
 <html>
-  <head>
+ <head>
     {% leaflet_js %}
     {% leaflet_css %}
-  </head>
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'mapView/mapStyle.css' %}">  <!-- Django busca todo los archivos estaticos (.js, .ccs) en la carpeta static -->
+
+</head>
 
   <body>
-      <h1>"Hello html"</h1>
+      <h1>"Insert title here"</h1>
       {% leaflet_map "yourmap" %}
   </body>
   
