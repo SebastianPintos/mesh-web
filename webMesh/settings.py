@@ -70,6 +70,11 @@ TEMPLATES = [
     },
 ]
 
+LEAFLET_CONFIG={
+    'DEFAULT_CENTER': (-34.542229, -58.711903),
+    'DEFAULT_ZOOM': 16,
+}
+
 WSGI_APPLICATION = 'webMesh.wsgi.application'
 
 
