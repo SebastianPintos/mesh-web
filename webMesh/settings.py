@@ -72,7 +72,7 @@ TEMPLATES = [
 
 LEAFLET_CONFIG={
     'DEFAULT_CENTER': (-34.542229, -58.711903),
-    'DEFAULT_ZOOM': 17,
+    'DEFAULT_ZOOM': 18,
 
     'SCALE': None,
     'RESET_VIEW': False,
