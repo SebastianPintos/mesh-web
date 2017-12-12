@@ -11,11 +11,14 @@
 </head>
 
   <body>
-      <h1>"Red Municipal Mesh"</h1>
+      <h1>"Check {{ location.location_lat }}"</h1>
       {% leaflet_map "meshMap" %}
-      <script type="text/javascript">
-      	L.marker().add
-      </script>
+<script type="text/javascript">
+    function map_init_basic (map, options) {
+        L.marker([50.5, 30.5]).addTo(map);
+
+    }
+</script>
 
   </body>
 
