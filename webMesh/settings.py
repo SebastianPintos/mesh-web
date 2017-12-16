@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'leaflet'
 ]
 
 MIDDLEWARE = [
@@ -69,14 +68,6 @@ TEMPLATES = [
         },
     },
 ]
-
-LEAFLET_CONFIG={
-    'DEFAULT_CENTER': (-34.542229, -58.711903),
-    'DEFAULT_ZOOM': 18,
-
-    'SCALE': None,
-    'RESET_VIEW': False,
-}
 
 WSGI_APPLICATION = 'webMesh.wsgi.application'
 
