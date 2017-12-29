@@ -11,7 +11,7 @@ const int targetPort = 8888;
 // Hostname de destino (opcional) x ej DellXPS12
 const char* targetHostname = "hostname"; 
 //Ip de Destino
-IPAddress targetIP(192, 168, 1, 113);
+IPAddress targetIP(192, 168, 8, 255);
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 
@@ -43,7 +43,7 @@ void loop() {
     //Comienza a armar el paquete
     Serial.print("1_Iniciando Paquete...");
     //Hostname o IP del servidor, reemplazar por targetIP para usar ip
-    boolean bBegin = Udp.beginPacket(targetHostname, targetPort); 
+    boolean bBegin = Udp.beginPacket(targetIP, targetPort); 
     Serial.println(boolToString2(bBegin)+"\n");
     if(bBegin==false){
       return;}
