@@ -2,10 +2,11 @@
  <head>
     {% load static %} <!-- Django busca todo los archivos estaticos (.js, .ccs) en la carpeta static -->
 
-    <link rel="stylesheet" href="{% static 'mapView/js/leaflet/leaflet.css' %}" />
+    <link rel="stylesheet" href="{% static 'mapView/js/libraries/leaflet/leaflet.css' %}" />
     <link rel="stylesheet" href="{% static 'mapView/css/mapView.css' %}" />
 
-    <script src="{% static 'mapView/js/leaflet/leaflet.js' %}"></script>
+    <script src="{% static 'mapView/js/libraries/leaflet/leaflet.js' %}"></script>
+    <script src="{% static 'mapView/js/libraries/jquery-3.2.1.js' %}"></script>
     <script type="text/javascript" src ="{% static 'mapView/js/Map.js' %}"></script>
     <script type="text/javascript" src ="{% static 'mapView/js/Node.js' %}"></script>
     

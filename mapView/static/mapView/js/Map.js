@@ -7,7 +7,7 @@ var Map = function(divId){
 		  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-		map.setView([-34.542229, -58.711903], 17);
+		map.setView([-34.542229, -58.711903], 18);
 	}
 
 	this.addNode = function(node){

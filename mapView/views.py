@@ -1,16 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
-
+from mapView.model_to_json import get_json_from_models, get_nodes
 
 # Create your views here.
 def index(request):
     return HttpResponse("Hello, world. You're at the MapView index.")
 
-def want_see(request, node_name):
-    response = "The node what you are requesting for is: %s."
-    return HttpResponse(response % node_name)
-
 def map(request):
+	return render(request, 'mapView/mapView.html')
 
-    return render(request, 'mapView/mapView.html')
+def node_info(request):
+	toSend = get_json_from_models(get_nodes())
+	return JsonResponse(toSend, safe=False)
