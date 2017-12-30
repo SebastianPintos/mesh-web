@@ -7,7 +7,7 @@ PUERTO_NODO_MASTER= 5005
 
 def enviarUDP(IP,port,message):
     print("\n/////// Enviar UDP ///////\n")
-    print("Creando Socket...", end='')
+    print("Creando Socket...")
     try:
         sock = socket(AF_INET, SOCK_DGRAM)
     except:
@@ -15,7 +15,7 @@ def enviarUDP(IP,port,message):
         print("\n/////// FIN Enviar UDP ///////")
         return
     print("listo")
-    print("Enviando Mensaje...", end='')
+    print("Enviando Mensaje...")
 
     try:
         sock.sendto(message, (IP, port))
@@ -30,7 +30,7 @@ def enviarUDP(IP,port,message):
 
 
 def escucharMensajesArduino():
-    print("Abriendo Socket...", end='')
+    print("Abriendo Socket...")
 
     try:
         sock = socket(AF_INET, SOCK_DGRAM)
@@ -47,7 +47,7 @@ def escucharMensajesArduino():
 
     while True:
         print("\n/////Escuchando Arduino/////\n")
-        print("...",end='')
+        print("...")
         try:
             data,addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
         except:
