@@ -2,7 +2,7 @@ from socket import *
 import time,traceback
 
 UDP_PORT_Arduino = 8888
-IP_NODO_MASTER= '10.10.5.5'
+IP_NODO_MASTER= '192.168.2.255'
 PUERTO_NODO_MASTER= 5005
 
 def enviarUDP(IP,port,message):
