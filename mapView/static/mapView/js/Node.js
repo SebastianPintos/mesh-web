@@ -1,22 +1,17 @@
-var NodeMarker = function(latLng, ip, state){
+var Node = function(latLng, ip, state){
 
+	this.latlng = latLng;
 	this.currentState = state;	
 	this.ip = ip;
-
-	this.marker = L.marker(latLng);
-	this.marker.bindPopup("Ip = " + ip + "\n" + "Estado = " + state); //TODO Pone más lindo
 }
 
-function getCluster(jsonCluster){
-	listToRet = [];
-
-	jsonCluster.map(nodeJson => listToRet.push(new NodeMarker([nodeJson.lat, nodeJson.lon],
+function saveCluster(jsonCluster){
+	nodes = [];
+	jsonCluster.map(nodeJson => nodes.push(new Node([nodeJson.lat, nodeJson.lon],
 														nodeJson.ip,
 														nodeJson.state)));
-	return listToRet;
 }
 
 function parseStringToJSONObject(jsonstring){
 	return JSON.parse(jsonstring);
 }
-

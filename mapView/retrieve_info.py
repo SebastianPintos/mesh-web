@@ -1,8 +1,5 @@
-import subprocess, json, time, threading
-
-def init_tunnel():
-
-	process1 = subprocess.run(['ssh', '-nNT', '-L', '8082:192.168.1.1:9001', 'root@192.168.1.1'])
+import subprocess, json, time, threading, paramiko
+from mapView.models import Node, Location
 
 def json_to_object(shellOutput):
 	if isinstance(shellOutput, dict):
@@ -25,29 +22,68 @@ def json_to_object(shellOutput):
 
 def retrieve_info():
 
+	LOCAL_IP = '192.168.1.1'
+	LOCAL_PORT='22'
+	output=""
+
+	client = paramiko.SSHClient()
+	client.load_system_host_keys()
+	client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+	client.connect(LOCAL_IP, LOCAL_PORT, username='root', password='root')
+
+	stdin, stdout, stderr = client.exec_command("echo \"/netjsoninfo GRAPH\" | nc 127.0.0.1 9001")# a properties
+
+	print (stdout)
+	for line in stdout:
+	    output=output+line
+	if output!="":
+	    print ("")
+	else:
+	    print ("No funciona, lanzar excepción")
+
+	client.close()
+
+	return output	
+
+def get_active_ips(olsrObject):
+	active_ips = []
+	for item in olsrObject.collection:
+		if item.topology_id == 'ipv4_0':
+			for node in item.nodes:
+				if node.properties.type == 'local' or node.properties.type == 'node':
+					active_ips.append(node.properties.router_addr)
+
+	print("These are the active ips: ", active_ips)
+	return active_ips
+
+def save_changes(active_ips):
+	#Los nodos que pertencen a la tabla de ruteo se guardan como disponibles
+	nodes = Node.objects.all()
+	#Si un nodo no está en la tabla de ruteo es porqu está apagado
+
+	for node in nodes:
+		if (node.node_ip not in active_ips):
+			node.node_states = 'ROJO'
+		else:
+			node.node_states = 'AMARILLO'
+
+	#Esto no debería ir acá
+	for node in nodes:
+		print (node.node_ip, " | ", node.node_states)
+		node.save()
+
+def main(): #debería ser main
 	while 1:
-		LOCAL_IP = '192.168.1.1'
-		LOCAL_PORT='9001'
+		raw_data = retrieve_info()
+		node_info = json_to_object(json.loads(raw_data))
 
-		process1 = subprocess.Popen(['echo', '/netjsoninfo graph'], stdout=subprocess.PIPE)
-
-		process2 = subprocess.run(['nc', LOCAL_IP, LOCAL_PORT], stdin=process1.stdout, stdout=subprocess.PIPE)
-
-		result = process2.stdout.decode('utf-8')
-
-		print (result)
-
-		time.sleep(5)
-	return result	
-
-def save_changes(): #debería ser main
-	raw_data = retrieve_info()
-	node_info = json_to_object(json.loads(raw_data))
-
-	#guardar cambios
-	return node_info
+		save_changes(get_active_ips(node_info))
+		#guardar cambios
+		print ("Se guardó")
+		time.sleep(15)
+		
 
 def retrieve_info_daemon():
-	d = threading.Thread(target=retrieve_info, name='retrieve')
+	d = threading.Thread(target=main, name='retrieve')
 	d.setDaemon(True)
 	d.start()

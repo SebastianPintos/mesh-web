@@ -7,17 +7,22 @@
 
     <script src="{% static 'mapView/js/libraries/leaflet/leaflet.js' %}"></script>
     <script src="{% static 'mapView/js/libraries/jquery-3.2.1.js' %}"></script>
-    <script type="text/javascript" src ="{% static 'mapView/js/Map.js' %}"></script>
     <script type="text/javascript" src ="{% static 'mapView/js/Node.js' %}"></script>
-    
+    <script type="text/javascript" src ="{% static 'mapView/js/Drawer.js' %}"></script>
+
 </head>
 
   <body>
       <h1>"Red Municipal Mesh"</h1>
     
       <div id = 'meshMap'></div>
-      <script type="text/javascript" src = "{% static 'mapView/js/Main.js' %}"></script>
-
+      <script type="text/javascript" src = "{% static 'mapView/js/CreateMap.js' %}"></script>
+      <script type="text/javascript" src = "{% static 'mapView/js/RequestInfo.js' %}"></script>
+      <script type="text/javascript">
+        var greenIcon = drawer.createIcon("{% static 'mapView/icons/green-marker-256.png' %}");
+        var yellowIcon = drawer.createIcon("{% static 'mapView/icons/yellow-marker-256.png' %}");
+        var redIcon = drawer.createIcon("{% static 'mapView/icons/red-marker-256.png' %}");
+      </script>
   </body>
 
 </html>
