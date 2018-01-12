@@ -1,10 +1,8 @@
 var requestInfo =  function(){
 	$.when($.ajax('http://localhost:8000/mapView/get-info')). //Request a Django
 	then(response => parseStringToJSONObject(response)). //Response con JSON String a Object
-	then(setOfJsonObjects => saveCluster(setOfJsonObjects)). //obtengo una lista de nodos
-	done(drawer.draw()); //Actualizo los nodos en memoria
+	done(setOfNodes => drawer.draw(setOfNodes)); //Dibujo los nodos
 }
-
 
 requestInfo();
 setInterval(requestInfo, 5000);

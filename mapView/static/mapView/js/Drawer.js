@@ -2,15 +2,16 @@ var Drawer = function(canvasMap){
 
 	this.canvasMap = canvasMap;
 
-	this.draw = function(){
+	this.draw = function(setOfNodes){
 		if (! this._isThereAnyMarker()){
-			nodes.forEach(node => this._addMarkerToMap(node));
+			setOfNodes.forEach(node => this._addMarkerToMap(node));
 		}
 		else
-			nodes.forEach(node => this._actualizeMarker(node));
+			setOfNodes.forEach(node => this._actualizeMarker(node));
 	}
 
-	this._choseIconByState = function(nodeState){
+	_choseIconByState = function(nodeState){
+		console.log(nodeState)
 		switch (nodeState){
 			case 'VERDE': return greenIcon; break;
 			case 'AMARILLO': return yellowIcon; break;
@@ -19,23 +20,26 @@ var Drawer = function(canvasMap){
 	}
 
 	this._addMarkerToMap = function(node){
-		marker = L.marker(node.latlng);
+		marker = L.marker([node.lat, node.lon]);
 		marker.bindPopup("Ip = " + node.ip); //TODO Pone más lindo
 		marker.title = node.ip;
-		marker.setIcon(this._choseIconByState(node.currentState));
+		marker.setIcon(_choseIconByState(node.state));
 		marker.addTo(canvasMap);//TODO cambiar
-
+		markers.push(marker);
 	}
 
 	this._actualizeMarker = function(node){
+		console.log("Entra a _actualizeMarker");
 		this.canvasMap.eachLayer(function(layer){
 			if (layer.title === node.ip)
-				layer.setIcon(this._choseIconByState(node.nodeState));
+				layer.setIcon(_choseIconByState(node.state));
 		})
 	}
 
 	this._isThereAnyMarker = function(){
-		return false;
+		retValue = false;
+		markers.forEach(marker => retValue |= this.canvasMap.hasLayer(marker));
+		return retValue;
 	}
 
 	this.createIcon = function(filePath){
