@@ -9,6 +9,7 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 // puerto al cual se envia el paquete  
 const int targetPort = 8888;      
 // Hostname de destino (opcional) x ej DellXPS12
+
 const char* targetHostname = "hostname"; 
 //Ip de Destino
 IPAddress targetIP(192, 168, 1, 255);
