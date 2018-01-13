@@ -37,8 +37,6 @@ void loop() {
    
     //Mide los sensores
     int stage = 0;
-    sensor0Value = (analogRead(A0));
-    sensor0outputValue = map(sensor0Value, 0, 1023, 0, 255);
     int sensorVal = digitalRead(2);
     
     //Comienza a armar el paquete
@@ -51,7 +49,7 @@ void loop() {
     //Armando Mensaje
     String sensorString = boolToString(sensorVal);
     String message="{ \"Sensor0\" : "+ sensorString+", \"Sensor1\" : "+ 
-    intTo3Char(sensor0outputValue)+" }";
+    meassureAmps()+" }";
     //Enviando Paquete
     Serial.print("2_Escribiendo Paquete...");
     boolean bWrite =Udp.write(message.c_str());
@@ -70,6 +68,24 @@ void loop() {
     delay (2000);
 
 }
+
+String meassureAmps(){
+  float sample = 0;
+  for(int i = 0; i < 150 ; i++)
+  {
+    sample += analogRead(analogInPin); //read the current from sensor
+    delay(2);
+  }
+  sample = sample / 150;
+  float x = mapfloat(sample, 0 , 1023 ,0 ,5 );
+  float a= (5.0 * x);
+  float y =  a - 12.5 ;
+  if ( y < 0){
+    
+    y = y*(-1);
+    }
+  return String(y,1)+ "A";
+  }
 
 String intTo3Char(int n){
   if(n>99){
