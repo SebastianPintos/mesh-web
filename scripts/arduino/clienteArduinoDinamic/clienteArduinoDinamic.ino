@@ -8,9 +8,10 @@ int sensor0outputValue = 0;
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 // puerto al cual se envia el paquete  
 const int targetPort = 8888;      
-// Hostname de destino (opcional) x ej DellXPS12
+// Hostname de destino (opcional) x ej Ubuntu-VCS30
 
-const char* targetHostname = "hostname"; 
+const char* targetHostname = "hostname";
+boolean debug = false; 
 //Ip de Destino
 IPAddress targetIP(192, 168, 1, 255);
 // An EthernetUDP instance to let us send and receive packets over UDP
@@ -19,6 +20,11 @@ EthernetUDP Udp;
 void setup() {
   Serial.begin(9600);
   pinMode(2, INPUT_PULLUP);
+  if(digitalRead(2)==false){ //DEBUG MODE saltea conexion DHCP para probar mediciones
+    Serial.println("DEBUG MODE");
+    debug = true ;
+    return;
+    }
   Serial.println("\n/////////Iniciando/////////\n");
   Serial.print("Conectando con DHCP...");
   boolean bDHCP=Ethernet.begin(mac);
@@ -38,6 +44,17 @@ void loop() {
     //Mide los sensores
     int stage = 0;
     int sensorVal = digitalRead(2);
+    if(debug){
+          String sensorString = boolToString(sensorVal);
+          String message="{ \"Sensor0\" : "+ sensorString+", \"Sensor1\" : "+ 
+          meassureAmps()+" }";
+          Serial.println("////////////DEBUG MODE//////////////\n");
+          Serial.println(message+"\n");
+          Serial.println("////////////////////////////////////\n");
+          delay(1000);
+          return;
+    }
+
     
     //Comienza a armar el paquete
     Serial.print("1_Iniciando Paquete...");
@@ -73,7 +90,7 @@ String meassureAmps(){
   float sample = 0;
   for(int i = 0; i < 150 ; i++)
   {
-    sample += analogRead(analogInPin); //read the current from sensor
+    sample += analogRead(A0); //read the current from sensor
     delay(2);
   }
   sample = sample / 150;
@@ -86,6 +103,10 @@ String meassureAmps(){
     }
   return String(y,1)+ "A";
   }
+    float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
+{
+ return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 String intTo3Char(int n){
   if(n>99){
