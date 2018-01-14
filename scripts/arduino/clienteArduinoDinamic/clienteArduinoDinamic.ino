@@ -93,8 +93,8 @@ String measureAmps(){
     delay(2);
     }
   float ret = sample/150;
-  ret = ret - 0.090 ; //with no load sensor oscilates between these values
-  if( ret < 0 ){
+  
+  if( ret <= 0.090 ){//with no load sensor oscilates between 0.08 and 0.09 
     ret = 0;
     }
   return String(ret,3)+ " A";
