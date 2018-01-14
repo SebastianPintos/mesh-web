@@ -86,41 +86,32 @@ void loop() {
 
 }
 
-String meassureAmps(){
-  float sample = 0;
-  for(int i = 0; i < 150 ; i++)
-  {
-    sample += analogRead(A0); //read the current from sensor
-    delay(2);
+String measureAmps(){
+  float sample=0;
+  for(int i=0 ; i<150 ; i++){
+    sample += takeAmpSample();
+    }
+  float ret = sample/150;
+  return String(ret,0)+ "A";
   }
-  sample = sample / 150;
+
+float takeAmpSample(){
+  float sample = analogRead(A0); //read the current from sensor
   float x = mapfloat(sample, 0 , 1023 ,0 ,5 );
-  float a= (5.0 * x);
-  float y =  a - 12.5 ;
+  float a= (10.0 * x);
+  float y =  a - 25.0 ;
   if ( y < 0){
     
     y = y*(-1);
     }
-  return String(y,1)+ "A";
+  return y;
   }
-    float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
+
+float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
 {
- return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-String intTo3Char(int n){
-  if(n>99){
-    return String(n);}
-  if(n>9){
-    return "0"+String(n);}
-  if(n<10&&n>=0){
-    return "00"+String(n);}
-  else{  
-    return String(n);
-  }
-  Serial.println();
-  Serial.println(n);
-  }
 
 
 String boolToString2(boolean b){
