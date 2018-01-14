@@ -47,7 +47,7 @@ void loop() {
     if(debug){
           String sensorString = boolToString(sensorVal);
           String message="{ \"Sensor0\" : "+ sensorString+", \"Sensor1\" : "+ 
-          meassureAmps()+" }";
+          measureAmps()+" }";
           Serial.println("////////////DEBUG MODE//////////////\n");
           Serial.println(message+"\n");
           Serial.println("////////////////////////////////////\n");
@@ -66,7 +66,7 @@ void loop() {
     //Armando Mensaje
     String sensorString = boolToString(sensorVal);
     String message="{ \"Sensor0\" : "+ sensorString+", \"Sensor1\" : "+ 
-    meassureAmps()+" }";
+    measureAmps()+" }";
     //Enviando Paquete
     Serial.print("2_Escribiendo Paquete...");
     boolean bWrite =Udp.write(message.c_str());
@@ -90,9 +90,14 @@ String measureAmps(){
   float sample=0;
   for(int i=0 ; i<150 ; i++){
     sample += takeAmpSample();
+    delay(2);
     }
   float ret = sample/150;
-  return String(ret,0)+ "A";
+  ret = ret - 0.090 ; //with no load sensor oscilates between these values
+  if( ret < 0 ){
+    ret = 0;
+    }
+  return String(ret,3)+ " A";
   }
 
 float takeAmpSample(){
@@ -104,6 +109,7 @@ float takeAmpSample(){
     
     y = y*(-1);
     }
+
   return y;
   }
 
