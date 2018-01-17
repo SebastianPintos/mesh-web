@@ -8,15 +8,15 @@ int sensor0outputValue = 0;
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
 //the IP address is dependent on your network
-IPAddress ip(192, 168, 2, 100);
+IPAddress ip(192, 168, 1, 100);
 //the dns server ip
-IPAddress dnServer(192, 168, 2, 1);
+IPAddress dnServer(192, 168, 1, 1);
 // the router's gateway address:
-IPAddress gateway(192, 168, 2, 1);
+IPAddress gateway(192, 168, 1, 1);
 // the subnet:
 IPAddress subnet(255, 255, 255, 0);
 // Target IP
-IPAddress targetIP(192, 168, 2, 1);
+IPAddress targetIP(192, 168, 1, 1);
 // Hostname de destino (opcional)
 const char* targetHostname = "hostname"; 
 // puerto al cual se envia el paquete  

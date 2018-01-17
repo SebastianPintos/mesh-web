@@ -42,9 +42,6 @@ String measureAmps(){
     }
   float ret = sample/150;
   
-  if( ret <= 0.090 ){//with no load sensor oscilates between 0.08 and 0.09 
-    ret = 0;
-    }
   return String(ret,3)+ " A";
   }
 
@@ -65,6 +62,6 @@ float takeAmpSample(){
   
 void loop() {
   // read the analog in value:
-  Serial.print("Amps = "+measureAmps()+", Sensor = ");
+  Serial.print("Amps = "+measureAmps());
   delay(1000);
 }

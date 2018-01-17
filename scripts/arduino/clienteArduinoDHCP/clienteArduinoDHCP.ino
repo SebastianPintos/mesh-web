@@ -13,7 +13,7 @@ const int targetPort = 8888;
 const char* targetHostname = "hostname";
 boolean debug = false; 
 //Ip de Destino
-IPAddress targetIP(192, 168, 1, 255);
+IPAddress targetIP(192, 168, 3, 255);
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 
@@ -65,7 +65,7 @@ void loop() {
       return;}
     //Armando Mensaje
     String sensorString = boolToString(sensorVal);
-    String message="{ \"Sensor0\" : "+ sensorString+", \"Sensor1\" : "+ 
+    String message="{ \"Sensor1\" : "+ 
     measureAmps()+" }";
     //Enviando Paquete
     Serial.print("2_Escribiendo Paquete...");
@@ -94,10 +94,7 @@ String measureAmps(){
     }
   float ret = sample/150;
   
-  if( ret <= 0.090 ){//with no load sensor oscilates between 0.08 and 0.09 
-    ret = 0;
-    }
-  return String(ret,3)+ " A";
+  return String(ret,3);
   }
 
 float takeAmpSample(){
