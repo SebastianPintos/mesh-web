@@ -46,7 +46,7 @@ void loop() {
     int sensorVal = digitalRead(2);
     if(debug){
           String sensorString = boolToString(sensorVal);
-          String message="{ \"Sensor0\" : "+ sensorString+", \"Sensor1\" : "+ 
+          String message="{\"Sensor0\" : "+ 
           measureAmps()+" }";
           Serial.println("////////////DEBUG MODE//////////////\n");
           Serial.println(message+"\n");
