@@ -10,4 +10,4 @@ urlpatterns = [
 ]
 
 #Start up deamons
-#retrieve_info_daemon()
+retrieve_info_daemon()

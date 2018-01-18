@@ -22,7 +22,7 @@ def json_to_object(shellOutput):
 
 def retrieve_info():
 
-	LOCAL_IP = '192.168.1.1'
+	LOCAL_IP = '192.100.1.1'
 	LOCAL_PORT='22'
 	output=""
 
