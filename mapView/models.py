@@ -29,7 +29,7 @@ class Location(models.Model):
     location_lon = models.DecimalField(max_digits=11, decimal_places = 7)
 
 class NodeLogRecords(models.Model):
-     node = models.ForeignKey('Node', on_delete=models.CASCADE)
+     record_node = models.ForeignKey(Node, on_delete=models.CASCADE)
      record_date = models.DateTimeField(auto_now_add=True)
      record_electric_current = models.DecimalField(max_digits = 5, decimal_places=3)
      record_temperature = models.DecimalField(max_digits = 5, decimal_places = 2)
