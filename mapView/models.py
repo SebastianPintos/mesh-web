@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Node(models.Model):
-    node_ip = models.CharField(max_length=50)
+    node_ip = models.CharField(max_length=50, primary_key = True)
     node_location = models.ForeignKey('Location', on_delete=models.CASCADE)
 
     verde = 0
