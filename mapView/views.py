@@ -13,3 +13,7 @@ def map(request):
 def node_info(request):
 	toSend = get_json_from_models(get_nodes())
 	return JsonResponse(toSend, safe=False)
+
+def mesh_status(reques):
+    toSend = get_json_server_status()
+    return JsonResponse(toSend, safe=False)
