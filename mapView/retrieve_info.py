@@ -29,15 +29,7 @@ def retrieve_info():
 	client = paramiko.SSHClient()
 	client.load_system_host_keys()
 	client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-	#try:
-	print ("Yes, im here")
 	client.connect(MASTER_NODE_IP, MASTER_NODE_PORT, username='root', password='root', timeout=10)
-
-	# except socket.timeout as TimeOut:
-	# 	print("Trying again in a few seconds")
-	# 	time.sleep(5)
-	# 	retrieve_info()
 
 	stdin, stdout, stderr = client.exec_command("echo \"/netjsoninfo GRAPH\" | nc 127.0.0.1 9001")# a properties
 
@@ -82,12 +74,13 @@ def save_changes(active_ips):
 
 def main(): #debería ser main
 	while 1:
-		raw_data = retrieve_info()
-		node_info = json_to_object(json.loads(raw_data))
+		try:
+			raw_data = retrieve_info()
+			node_info = json_to_object(json.loads(raw_data))
+			save_changes(get_active_ips(node_info))
 
-		save_changes(get_active_ips(node_info))
-		#guardar cambios
-		print ("Se guardó")
+		except socket.timeout as TimeOut:
+			print("No se pude establecer conexión con el nodo maestro")
 		time.sleep(15)
 
 
