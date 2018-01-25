@@ -68,7 +68,11 @@ void loop() {
       return;}
     //Armando Mensaje
    // String sensorString = boolToString(sensorVal);
+<<<<<<< HEAD
     String message="{ \"10.10.5.1\" : "+measureAmps()+" }";
+=======
+    String message="{ \"Sensor0\" : "+measureAmps()+" }";
+>>>>>>> master
     //Enviando Paquete
     Serial.print("2_Escribiendo Paquete...");
     boolean bWrite =Udp.write(message.c_str());

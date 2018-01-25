@@ -34,7 +34,7 @@ def escucharMensajesArduino():
 
     try:
         sock = socket(AF_INET, SOCK_DGRAM)
-        sock.bind(("127.0.0.1", UDP_PORT_Arduino))#Sacar a archivo properties o como variable global
+        sock.bind(("0.0.0.0", UDP_PORT_Arduino))
     except:
         print("error")
         print(traceback.format_exc())

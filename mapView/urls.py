@@ -1,5 +1,4 @@
 from django.urls import path
-from mapView.retrieve_info import retrieve_info_daemon
 
 from . import views
 
