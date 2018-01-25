@@ -2,19 +2,17 @@ from django.core.serializers import serialize
 import json
 from mapView.models import Node, Location
 
-M
-
 def get_nodes():
     return Node.objects.all()
 
 def get_json_server_status():
     MASTER_NODE_PK = '10.10.5.5' #TODO: cambiar
     masterNode = Node.objects.get(pk = MASTER_NODE_PK).node_states
-
-    if (masterNode = 'ROJO'):
-        return json.dumps(("status":"down"))
+    
+    if (masterNode == 'ROJO'):
+        return json.dumps({"status":"down"})
     else:
-        return json.dumps(("status": "up"))
+        return json.dumps({"status": "up"})
 
 def get_json_from_models(nodes):  # TODO cambiar nombre
     to_ret = []
