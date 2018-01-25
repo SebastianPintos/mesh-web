@@ -18,10 +18,6 @@ class NodeMapper:
     def __init__(self, node):
         self.ip = node.node_ip
         self.state = node.node_states
+        self.hardware = node.node_hardware
         self.lat = node.node_location.location_lat.__float__()
         self.lon = node.node_location.location_lon.__float__()
-
-
-
-
-

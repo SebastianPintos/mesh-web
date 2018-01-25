@@ -15,6 +15,15 @@ class Node(models.Model):
     )
     node_states = models.CharField(max_length=1, choices=STATES, default=2)
 
+    ubiquity_unify_outdoor_plus = 0
+    raspberry_pi_3 = 1
+    STATES2 = (
+    (ubiquity_unify_outdoor_plus, 'UBIQUITY'),
+    (raspberry_pi_3, 'RASPBERRY')
+    )
+
+    node_hardware = models.CharField(max_length=1, choices=STATES2, default='UBIQUITY')
+
 class Location(models.Model):
     location_lat = models.DecimalField(max_digits=11, decimal_places = 7)
     location_lon = models.DecimalField(max_digits=11, decimal_places = 7)

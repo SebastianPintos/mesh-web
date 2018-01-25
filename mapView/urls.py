@@ -1,4 +1,6 @@
 from django.urls import path
+from mapView.retrieve_info import retrieve_info_daemon
+from mapView.udp_handler import udp_handler_daemon
 
 from . import views
 
@@ -10,3 +12,4 @@ urlpatterns = [
 
 #Start up deamons
 retrieve_info_daemon()
+udp_handler_daemon()

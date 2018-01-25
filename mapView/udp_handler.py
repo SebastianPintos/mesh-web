@@ -1,14 +1,16 @@
 import socket, threading, json
-from mapView.light_changes_detecter import LightChangesAnalizer
+from mapView.light_changes_detector import LightChangesAnalizer
 
 class LightStateParser:
     #recibo los datos crudos y luego los parseo a json
-    def parse_raw_data(self, raw_data):
-        print("received message:", raw_data)
-        toRet = json.loads(raw_data)
-        print(toRet)
-        return toRet
+    def __init__(self):
+        self.analyzer = LightChangesAnalizer()
 
+    def parse_raw_data(self, raw_data):
+        toRet = json.loads(raw_data)
+        #return toRet
+        #sacar lo de  abajo de acá
+        self.analyzer.analyze_data(toRet)
 
 class UdpListener:
     BUFFER_SIZE = 1024

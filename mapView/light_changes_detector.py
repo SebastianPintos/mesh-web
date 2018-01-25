@@ -2,14 +2,13 @@ from mapView.models import Node
 
 class LightChangesAnalizer:
     #Al comenzar, trae los cambio de la base de datos y los gaurda en memoria
-    BASE_MINIMUM_AMPERAGE = 0.1
-
-    TURNED_ON_LIGHT = 'VERDE'
-    TURNED_OFF_LIGHT= 'AMARILLO'
-    POWEROFF_NODE = 'ROJO'
-
     def __init__(self):
-        #Declaor un diccionar,
+        self.BASE_MINIMUM_AMPERAGE = 0.8
+
+        self.TURNED_ON_LIGHT = 'VERDE'
+        self.TURNED_OFF_LIGHT= 'AMARILLO'
+        self.POWEROFF_NODE = 'ROJO'
+
         self.nodes = Node.objects.all();
 
     def __save_changes(self, n_ip, node_status):
@@ -20,18 +19,27 @@ class LightChangesAnalizer:
     def __compare_node_states(self, light_amperage, n_ip):
         actual_state = self.nodes.get(node_ip = n_ip).node_states
         #Si el estado difiere del actual_state (debería haber un tiempo) cambiar
-        if actual_state == TURNED_ON_LIGHT and not __isTurnedOn(light_amperage):
+        if actual_state == self.TURNED_ON_LIGHT and not self.__isTurnedOn(light_amperage):
             #Avisar de (pasar a amarillo)
-            return TURNED_OFF_LIGHT
-
-        if actual_state == TURNED_OFF_LIGHT and __isTurnedOn(light_amperage):
+            self.__save_changes(n_ip, self.TURNED_OFF_LIGHT)
+            return "AMARILLO"
+        if actual_state == self.TURNED_OFF_LIGHT and self.__isTurnedOn(light_amperage):
             #Avisar de (pasar a verde)
-            return TURNED_ON_LIGHT
+            self.__save_changes(n_ip, self.TURNED_ON_LIGHT)
+            return "VERDE"
+        #return actual_state # pasar un estado para que no se escriba en memoria
 
-        return actual_state # pasar un estado para que no se escriba en memoria
 
 
-
-    def __isTurnedOn(light_state):
+    def __isTurnedOn(self, light_state):
         #Mide si los datos corresponden a una luz prendida o a una luz apagada
-        return light_state >= BASE_MINIMUM_AMPERAGE
+        return light_state >= self.BASE_MINIMUM_AMPERAGE
+
+    def analyze_data(self, json_light_data):
+        n_ip = ""
+        amperage = 0.0
+        for ip in json_light_data:
+            n_ip = ip
+            amperage = json_light_data[ip]
+        print ("El amperaje es: ", amperage)
+        print ("Lo que devuelve el metodo es: ", self.__compare_node_states(amperage, ip))

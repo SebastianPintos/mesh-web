@@ -1,4 +1,4 @@
-import subprocess, json, time, threading, paramiko
+import subprocess, socket, json, time, threading, paramiko
 from mapView.models import Node, Location
 
 def json_to_object(shellOutput):
@@ -22,14 +22,22 @@ def json_to_object(shellOutput):
 
 def retrieve_info():
 
-	LOCAL_IP = '192.100.1.1'
-	LOCAL_PORT='22'
+	MASTER_NODE_IP = '129.168.1.1'
+	MASTER_NODE_PORT='22'
 	output=""
 
 	client = paramiko.SSHClient()
 	client.load_system_host_keys()
 	client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-	client.connect(LOCAL_IP, LOCAL_PORT, username='root', password='root')
+
+	#try:
+	print ("Yes, im here")
+	client.connect(MASTER_NODE_IP, MASTER_NODE_PORT, username='root', password='root', timeout=10)
+
+	# except socket.timeout as TimeOut:
+	# 	print("Trying again in a few seconds")
+	# 	time.sleep(5)
+	# 	retrieve_info()
 
 	stdin, stdout, stderr = client.exec_command("echo \"/netjsoninfo GRAPH\" | nc 127.0.0.1 9001")# a properties
 
@@ -43,7 +51,7 @@ def retrieve_info():
 
 	client.close()
 
-	return output	
+	return output
 
 def get_active_ips(olsrObject):
 	active_ips = []
@@ -64,7 +72,7 @@ def save_changes(active_ips):
 	for node in nodes:
 		if (node.node_ip not in active_ips):
 			node.node_states = 'ROJO'
-		else:
+		if (node.node_ip in active_ips and node.node_states == 'ROJO'):
 			node.node_states = 'AMARILLO'
 
 	#Esto no debería ir acá
@@ -81,7 +89,7 @@ def main(): #debería ser main
 		#guardar cambios
 		print ("Se guardó")
 		time.sleep(15)
-		
+
 
 def retrieve_info_daemon():
 	d = threading.Thread(target=main, name='retrieve')
