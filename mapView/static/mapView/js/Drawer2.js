@@ -11,7 +11,6 @@ var Drawer = function(canvasMap){
 	}
 
 	_choseIconByState = function(nodeState){
-		console.log(nodeState)
 		switch (nodeState){
 			case 'VERDE': return greenIcon; break;
 			case 'AMARILLO': return yellowIcon; break;
@@ -37,7 +36,6 @@ var Drawer = function(canvasMap){
 	}
 
 	this._actualizeMarker = function(node){
-		console.log("Entra a _actualizeMarker");
 		this.canvasMap.eachLayer(function(layer){
 			if (layer.title === node.ip){
 				layer.setIcon(_choseIconByHardware(node.hardware));
@@ -52,7 +50,6 @@ var Drawer = function(canvasMap){
 	}
 
 	this.createIcon = function(filePath){
-		console.log(filePath);
 		return icon = L.icon({
 			iconUrl: filePath,
 			iconSize:     [100, 60], // size of the icon
