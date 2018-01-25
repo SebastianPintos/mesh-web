@@ -80,8 +80,10 @@ def main(): #debería ser main
 			save_changes(get_active_ips(node_info))
 
 		except socket.timeout as TimeOut:
-			print("No se pude establecer conexión con el nodo más")
-			#Avisarle a alguien/algo que el servidor está caído (Es necesario?)
+			print("No se pude establecer conexión con el Nodo Maestros")
+			#Avisarle al modelo que el Nodo Maestro está caído
+			#Para ello, le decimos que todos los nodos de la red están cídos, incluyendo al NodoMaestro
+			save_changes([])
 		time.sleep(15)
 
 
