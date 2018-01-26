@@ -79,7 +79,7 @@ def main(): #debería ser main
 			node_info = json_to_object(json.loads(raw_data))
 			save_changes(get_active_ips(node_info))
 
-		except socket.timeout as TimeOut:
+		except Exception:
 			print("No se pude establecer conexión con el Nodo Maestros")
 			#Avisarle al modelo que el Nodo Maestro está caído
 			#Para ello, le decimos que todos los nodos de la red están cídos, incluyendo al NodoMaestro
