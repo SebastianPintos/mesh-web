@@ -5,19 +5,16 @@ var Node = function(latLng, ip, state){
 	this.ip = ip;
 }
 
-/*function saveCluster(jsonCluster){
-	nodes = [];
-	jsonCluster.map(nodeJson => nodes.push(new Node([nodeJson.lat, nodeJson.lon],
-														nodeJson.ip,
-														nodeJson.state)));
-}*/
+function isServerDown(serverStat){
+	if (serverStatus === "up" && serverStat === "down")
+		return true
+	return false
+}
 
 function saveCluster(jsonCluster){
 	jsonCluster.map(nodeJson => function(nodeJson){
 		markerToAdd = L.marker([nodeJson.lat, nodeJson.lon]);
 		markerToAdd.title = nodeJson.ip;
-
-
 	})
 }
 

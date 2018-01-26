@@ -10,6 +10,12 @@ var Drawer = function(canvasMap){
 			setOfNodes.forEach(node => this._actualizeMarker(node));
 	}
 
+	this.alertChanges = function(serverStat){
+		if (isServerDown(serverStat))
+			alert("Advertencia, el server está caído")
+		serverStatus = serverStat;
+	}
+
 	_choseIconByState = function(nodeState){
 		switch (nodeState){
 			case 'VERDE': return greenIcon; break;

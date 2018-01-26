@@ -4,7 +4,8 @@ var requestInfo =  function(){
 	done(setOfNodes => drawer.draw(setOfNodes)); //Dibujo los nodos
 
 	$.when($.ajax('http://localhost:8000/mapView/mesh-status')).
-	then(resp => console.log("Acá esta la respuesta " + resp))
+	then(resp => parseStringToJSONObject(resp)).
+	then(serverStatus => drawer.alertChanges(serverStatus.status))
 }
 
 
