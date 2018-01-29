@@ -31,7 +31,7 @@ def retrieve_info():
 	client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 	client.connect(MASTER_NODE_IP, MASTER_NODE_PORT, username='root', password='root', timeout=10)
 
-	stdin, stdout, stderr = client.exec_command("echo \"/netjsoninfo GRAPH\" | nc 127.0.0.1 9001")# a properties
+	stdin, stdout, stderr = client.exec_command("echo \"/netjsoninfo filter graph ipv4_0\" | nc 127.0.0.1 9001")# a properties
 
 	print (stdout)
 	for line in stdout:
@@ -47,11 +47,11 @@ def retrieve_info():
 
 def get_active_ips(olsrObject):
 	active_ips = []
-	for item in olsrObject.collection:
-		if item.topology_id == 'ipv4_0':
-			for node in item.nodes:
-				if node.properties.type == 'local' or node.properties.type == 'node':
-					active_ips.append(node.properties.router_addr)
+	#for item in olsrObject.collection:
+	if olsrObject.topology_id == 'ipv4_0':
+		for node in olsrObject.nodes:
+			if node.properties.type == 'local' or node.properties.type == 'node':
+				active_ips.append(node.properties.router_addr)
 
 	print("These are the active ips: ", active_ips)
 	return active_ips
