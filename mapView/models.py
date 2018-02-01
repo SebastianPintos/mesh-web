@@ -1,5 +1,5 @@
 from django.db import models
-
+from abc import ABCMeta, abstractmethod
 # Create your models here.
 class Node(models.Model):
     node_ip = models.CharField(max_length=50, primary_key = True)
@@ -33,3 +33,10 @@ class NodeLogRecords(models.Model):
      record_date = models.DateTimeField(auto_now_add=True)
      record_electric_current = models.DecimalField(max_digits = 5, decimal_places=3)
      record_temperature = models.DecimalField(max_digits = 5, decimal_places = 2)
+
+class UdpPackage:
+    def __init__(self, type, ip, timestamp, **kwargs):
+        self.type = type
+        self.ip = ip
+        self.timestamp = timestamp
+        self.values = kwargs
