@@ -63,7 +63,7 @@ def escucharMensajesArduino():
         print(to_send)
         print("\nEnviando a NodoMaster...")
         print("\n/////FIN Escuchando Arduino/////")
-        #enviarUDP(IP_NODO_MASTER,PUERTO_NODO_MASTER,to_send)
+        enviarUDP(IP_NODO_MASTER,PUERTO_NODO_MASTER,to_send)
 
 print("\n//////////NODO CLIENTE/////////\n")
 escucharMensajesArduino()
