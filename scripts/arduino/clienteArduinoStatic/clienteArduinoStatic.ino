@@ -1,5 +1,5 @@
 #include <SPI.h>        
-
+#include <TimerOne.h>
 #include <Ethernet2.h>
 int sensor0Value = 0; 
 int sensor0outputValue = 0;
@@ -22,22 +22,16 @@ const char* targetHostname = "hostname";
 const int targetPort = 8888;      
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
+boolean sendPackageFlag = false;
 
 void setup() {
   Serial.begin(9600);
   pinMode(2, INPUT_PULLUP);
   Serial.println("\n/////////Iniciando/////////\n");
   //DEBUG MODE saltea conexion para probar mediciones
-  boolean debug = !digitalRead(2);
-  while(debug){
-        String message="{\"Sensor0\" : "+ 
-        measureAmps()+" }";
-        Serial.println("////////////DEBUG MODE//////////////\n");
-        Serial.println(message+"\n");
-        Serial.println("////////////////////////////////////\n");
-        delay(1000);
-  }
-  
+  boolean debugMode = !digitalRead(2);
+  if (debugMode){
+    debug();}
   Serial.print("Iniciando Ethernet...");
   Ethernet.begin(mac, ip, dnServer, gateway, subnet);
   Serial.println("listo\n");
@@ -45,17 +39,26 @@ void setup() {
   Serial.print("Preparando Puerto UDP...");
   boolean bInit=Udp.begin(targetPort);
   Serial.println(boolToString2(bInit)+"\n");     
-  printIPAddress();  
-  Serial.println("\n/////////Iniciado/////////\n");
+  printIPAddress();
+  Serial.println("\n/////////Inicializando Timers/////////\n");  
+  Timer1.initialize(1000000);         // initialize timer1, and set a 1/2 second period
+  Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
+  Serial.println("\n/////////Iniciado/////////\n"); 
 }
-
-
+void callback()
+{
+  sendPackageFlag=true;
+}
 
 void loop() {
   // si flag true, send temppkg
- sendPackage(0);
- sendPackage(1);
- delay (2000);
+ if(sendPackageFlag == true)
+  {
+    sendPackage(0);
+    sendPackage(1);
+    sendPackageFlag = false;
+    } 
+
 
 }
 void sendPackage(int typeOfPackage){
@@ -187,6 +190,16 @@ String boolToString(boolean b){
  
   }
 
+void debug(){
+   while(true){
+        String message="{\"Sensor0\" : "+ 
+        measureAmps()+" }";
+        Serial.println("////////////DEBUG MODE//////////////\n");
+        Serial.println(message+"\n");
+        Serial.println("////////////////////////////////////\n");
+        delay(1000);
+  }
+  }
 void printIPAddress()
 {
   Serial.print("IP address: ");
