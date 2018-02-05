@@ -44,7 +44,7 @@ void setup() {
   //Necesario inicializar el puerto antes de poder transmitir
   Serial.print("Preparando Puerto UDP...");
   boolean bInit=Udp.begin(targetPort);
-  Serial.println(boolToString2(bInit)+"\n");
+  Serial.println(boolToString2(bInit)+"\n");     
   printIPAddress();  
   Serial.println("\n/////////Iniciado/////////\n");
 }
@@ -52,11 +52,13 @@ void setup() {
 
 
 void loop() {
- sendPacket();
+  // si flag true, send temppkg
+ sendPackage(0);
+ sendPackage(1);
  delay (2000);
 
 }
-void sendPacket(){
+void sendPackage(int typeOfPackage){
       
     //Comienza a armar el paquete
     Serial.print("1_Iniciando Paquete...");
@@ -65,12 +67,19 @@ void sendPacket(){
     Serial.println(boolToString2(bBegin)+"\n");
     if(bBegin==false){
       return;}
+      
     //Armando Mensaje
    // String sensorString = boolToString(sensorVal);
-    String message="{ \"Sensor\" : "+measureAmps()+" }";
-    //Enviando Paquete
+    String message = "";
+    
+    if (typeOfPackage == 0)
+      message="{ \"type\": 0, \"current\" : "+measureAmps()+" }";
+      
+    if (typeOfPackage == 1)
+      message = "{ \"type\": 1, \"temperature\" : "+ GetTemp() +" }";
+      
     Serial.print("2_Escribiendo Paquete...");
-    boolean bWrite =Udp.write(message.c_str());
+    boolean bWrite =Udp.write(message.c_str()); 
     
     Serial.println(boolToString2(bWrite)+"\n");
     if(bWrite==false){
@@ -81,7 +90,6 @@ void sendPacket(){
     if(bEnd==false){
       return;}
     Serial.println(message+"\n");
-    Serial.println("//////////////////////////\n");
     
   }
 
@@ -96,6 +104,37 @@ String measureAmps(){
   return String(ret,3);
   }
 
+String GetTemp(void)
+{
+  unsigned int wADC;
+  double t;
+
+  // The internal temperature has to be used
+  // with the internal reference of 1.1V.
+  // Channel 8 can not be selected with
+  // the analogRead function yet.
+
+  // Set the internal reference and mux.
+  ADMUX = (_BV(REFS1) | _BV(REFS0) | _BV(MUX3));
+  ADCSRA |= _BV(ADEN);  // enable the ADC
+
+  delay(20);            // wait for voltages to become stable.
+
+  ADCSRA |= _BV(ADSC);  // Start the ADC
+
+  // Detect end-of-conversion
+  while (bit_is_set(ADCSRA,ADSC));
+
+  // Reading register "ADCW" takes care of how to read ADCL and ADCH.
+  wADC = ADCW;
+
+  // The offset of 324.31 could be wrong. It is just an indication.
+  t = (wADC - 324.31 ) / 1.22;
+
+  // The returned temperature is in degrees Celsius.
+  return String(t, 3);
+}
+ 
 float takeAmpSample(){
   float sample = analogRead(A0); //read the current from sensor
   float x = mapfloat(sample, 0 , 1023 ,0 ,5 );
