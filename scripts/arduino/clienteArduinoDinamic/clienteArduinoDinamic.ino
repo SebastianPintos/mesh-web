@@ -11,7 +11,7 @@ const int targetPort = 8888;
 // Hostname de destino (opcional) x ej DellXPS12
 const char* targetHostname = "hostname"; 
 //Ip de Destino
-IPAddress targetIP(192, 168, 8, 255);
+IPAddress targetIP(192, 168, 2, 255);
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 

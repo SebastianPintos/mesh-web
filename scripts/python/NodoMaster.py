@@ -1,7 +1,11 @@
 import socket, threading
 
 UDP_IP = "0.0.0.0"
+<<<<<<< Updated upstream
 UDP_PORT = 5005
+=======
+UDP_PORT = 5007
+>>>>>>> Stashed changes
 
 sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
