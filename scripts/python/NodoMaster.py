@@ -2,11 +2,9 @@ import socket, threading
 import logging
 
 UDP_IP = "0.0.0.0"
-<<<<<<< Updated upstream
+
 UDP_PORT = 5005
-=======
-UDP_PORT = 5007
->>>>>>> Stashed changes
+
 
 UDP_SERVER_PORT = 5005
 UDP_SERVER_IP = "129.168.1.2"
