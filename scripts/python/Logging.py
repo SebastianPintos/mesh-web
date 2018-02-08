@@ -1,9 +1,9 @@
 import socket, time , sys
 
-logName="data.log"
+logName="log.txt"
 def log(message):
     timeStamp=time.strftime("%H:%M:%S - %d/%m/%Y")+" - "
-    with open("data.log", "a") as myfile:
+    with open(logName, "a") as myfile:
         myfile.write(timeStamp+message+"\n")
     print(timeStamp+message+"\n")
 UDP_IP = "0.0.0.0"
@@ -21,3 +21,4 @@ log("SERVER STARTED...");
 while True:
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     log(data)
+
