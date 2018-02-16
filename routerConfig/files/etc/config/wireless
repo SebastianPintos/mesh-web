@@ -13,4 +13,3 @@ config wifi-iface
 	option ssid 'ungs-olsrd2'
 	option mode 'adhoc'
 	option network 'wlan0'
-
