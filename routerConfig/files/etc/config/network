@@ -27,7 +27,7 @@ config interface 'wlan0'
 	option _orig_ifname 'wlan0'
 	option _orig_bridge 'false'
 	option proto 'static'
-	option ipaddr '10.10.5.5'
+	option ipaddr '10.10.5.4'
 	option netmask '255.255.255.0'
 
 config interface 'wlan5'
