@@ -56,6 +56,7 @@ void callback()
 }
 
 void softwareReset( uint8_t prescaller) {
+  // start watchdog with the provided prescaller
   wdt_enable( prescaller);
   // wait for the prescaller time to expire
   // without sending the reset signal by using
