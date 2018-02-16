@@ -1,6 +1,8 @@
 #include <SPI.h>        
 #include <TimerOne.h>
 #include <Ethernet2.h>
+
+
 int sensor0Value = 0; 
 int sensor0outputValue = 0;
 //MAC Address que usara el arduino (asegurarse de que sea unica)
@@ -54,13 +56,53 @@ void loop() {
   // si flag true, send temppkg
  if(sendPackageFlag == true)
   {
-    sendPackage(0);
-    sendPackage(1);
+    sendPackage(preparePackage(0));
+    sendPackage(preparePackage(1));
     sendPackageFlag = false;
     } 
-
-
 }
+
+
+
+
+String preparePackage(int typeOfPackage){
+  String message="";
+    if (typeOfPackage == 0)
+      message="{ \"type\": 0, \"current\" : "+measureAmps()+" }";
+    if (typeOfPackage == 1)
+      message = "{ \"type\": 1, \"temperature\" : "+ GetTemp() +" }";
+
+   return message;
+  }
+
+void sendPackage(String message){
+    //Comienza a armar el paquete
+    Serial.print("1_Iniciando Paquete...");
+    //IP o Hostname del servidor, reemplazar por targetHostname para usar hostname
+    boolean bBegin = Udp.beginPacket(targetIP, targetPort); 
+    Serial.println(boolToString2(bBegin)+"\n");
+    if(bBegin==false){
+      return;}
+      
+    //Armando Mensaje
+   // String sensorString = boolToString(sensorVal);
+
+      
+    Serial.print("2_Escribiendo Paquete...");
+    boolean bWrite =Udp.write(message.c_str()); 
+    
+    Serial.println(boolToString2(bWrite)+"\n");
+    if(bWrite==false){
+      return;}
+    Serial.print("3_Enviando... ");
+    boolean bEnd = Udp.endPacket();
+    Serial.println(boolToString2(bEnd)+"\n");
+    if(bEnd==false){
+      return;}
+    Serial.println(message+"\n");
+    
+  }
+
 void sendPackage(int typeOfPackage){
       
     //Comienza a armar el paquete
