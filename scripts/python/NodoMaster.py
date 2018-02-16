@@ -6,6 +6,10 @@ UDP_IP = "0.0.0.0"
 UDP_PORT = 5005
 
 
+sock = socket.socket(socket.AF_INET, # Internet
+                     socket.SOCK_DGRAM) # UDP
+sock.bind((UDP_IP, UDP_PORT))
+
 UDP_SERVER_PORT = 5005
 UDP_SERVER_IP = "129.168.1.2"
 
