@@ -1,6 +1,7 @@
 import logging
 import csv
 from abc import ABC, abstractmethod
+from mapView.models import NodeLogCurrentRecords, NodeLogTemperatureRecords
 
 from logging.handlers import TimedRotatingFileHandler
 
@@ -39,4 +40,22 @@ class UdpPackageLogger:
         for key in udp_pkg.__dict__:
             to_log.append(udp_pkg.__dict__[key])
 
-        logger.log_csv(to_log)
+        print(to_log)
+        #logger.log_csv(to_log)
+
+class UdpPackageSaver:
+
+    def __init__(self):
+        pass
+
+    def save_pkg(self, udp_pkg):
+        if udp_pkg.type == 0:
+            self._save_current(udp_pkg)
+        if udp_pkg.type == 1:
+            self._save_temperature(udp_pkg)
+
+    def _save_temperature(self, udp_pkg):
+        to_save = NodeLogCurrentRecords(udp_pkg.ip, udp_pkg.timestamp, udp_pkg.values)
+
+    def _save_current(self, udp_pkg):
+        pass

@@ -1,7 +1,7 @@
 import socket, threading, json
 from mapView.models import UdpPackage
 from mapView.light_changes_detector import LightChangesAnalizer
-from mapView.log_rotate import UdpPackageLogger
+from mapView.log_rotate import UdpPackageLogger, UdpPackageSaver
 
 
 class UdpPackageParser:
@@ -9,19 +9,23 @@ class UdpPackageParser:
     def __init__(self):
         pass
 
+    def _get_value(self, json_pkg):
+        if json_pkg['type'] == 0:
+            return json_pkg['current']
+        else:
+            return json_pkg['temperature']
+
     def parse_raw_data(self, raw_data):
         jsonpkg = json.loads(raw_data)
 
         # Buscar una mejor solución
         type = jsonpkg['type']
-        del jsonpkg['type']
         ip = jsonpkg['ip']
-        del jsonpkg['ip']
         timestamp = jsonpkg['timestamp']
-        del jsonpkg['timestamp']
 
-        return UdpPackage(type, ip, timestamp, jsonpkg)
+        value = self._get_value(jsonpkg)
 
+        return UdpPackage(type, ip, timestamp, value)
 
 class UdpListener:
     BUFFER_SIZE = 1024
@@ -32,6 +36,7 @@ class UdpListener:
         self.udp_port = udp_port
         self.analyzer = LightChangesAnalizer() # Esto no es responsabilidad de UD
         self.logger = UdpPackageLogger()
+        self.saver = UdpPackageSaver()
 
     def listen(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
@@ -44,6 +49,7 @@ class UdpListener:
             print(udp_package.type)
             self.analyzer.analyze_data(udp_package) #analizo el paquete
             self.logger.log_pkg(udp_package)#Logeo paquete
+#            self.saver.save_pkg(udp_package)
 
 
 # Además, inicializar un deamon

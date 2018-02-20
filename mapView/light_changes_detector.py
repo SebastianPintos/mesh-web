@@ -40,7 +40,7 @@ class LightChangesAnalizer:
             return
 
         ip = udp_package.ip
-        amperage = udp_package.values['current']
-
+        amperage = udp_package.values
+        
         print("El amperaje es: ", amperage)
         print("Lo que devuelve el metodo es: ", self.__compare_node_states(amperage, ip))
