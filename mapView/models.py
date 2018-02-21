@@ -12,7 +12,7 @@ class Node(models.Model):
 
     STATES = (
         (verde, 'VERDE'),
-        (amarillo, 'AMARILLO'),
+            (amarillo, 'AMARILLO'),
         (rojo, 'ROJO')
     )
     node_states = models.CharField(max_length=20, choices=STATES, default=2)

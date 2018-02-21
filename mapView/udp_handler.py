@@ -22,7 +22,7 @@ class UdpPackageParser:
         type = jsonpkg['type']
         ip = jsonpkg['ip']
         timestamp = jsonpkg['timestamp']
-
+        
         value = self._get_value(jsonpkg)
 
         return UdpPackage(type, ip, timestamp, value)
@@ -48,8 +48,8 @@ class UdpListener:
             udp_package = self.parser.parse_raw_data(data.decode())
             print(udp_package.type)
             self.analyzer.analyze_data(udp_package) #analizo el paquete
-            self.logger.log_pkg(udp_package)#Logeo paquete
-#            self.saver.save_pkg(udp_package)
+#            self.logger.log_pkg(udp_package)#Logeo paquete
+            self.saver.save_pkg(udp_package)
 
 
 # Además, inicializar un deamon
