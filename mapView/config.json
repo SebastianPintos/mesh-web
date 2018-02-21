@@ -1,0 +1,11 @@
+{
+  "master_node":{
+      "ip":"129.168.1.1",
+      "ssh_port":22,
+      "mesh_ip":"10.10.5.5"
+  },
+  "server":{
+      "udp_port":5005,
+      "udp_bind_to":"0.0.0.0"
+  }
+}
