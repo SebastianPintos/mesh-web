@@ -1,4 +1,6 @@
 var requestInfo =  function(){
+	var url = "http://" + ip + ":"+ port;
+
 	$.when($.ajax('http://localhost:8000/mapView/get-info')). //Request a Django
 	then(response => parseStringToJSONObject(response)). //Response con JSON String a Object
 	done(setOfNodes => drawer.draw(setOfNodes)); //Dibujo los nodos
@@ -7,7 +9,6 @@ var requestInfo =  function(){
 	then(resp => parseStringToJSONObject(resp)).
 	then(serverStatus => drawer.alertChanges(serverStatus.status))
 }
-
 
 requestInfo();
 setInterval(requestInfo, 5000);

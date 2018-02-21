@@ -21,9 +21,10 @@ def json_to_object(shellOutput):
 		return shellOutput
 
 def retrieve_info():
-
-	MASTER_NODE_IP = '129.168.1.1'
-	MASTER_NODE_PORT='22'
+	with open('mapView/config.json') as confi:
+		data = json.load(confi)
+	MASTER_NODE_IP = data['master_node']['ip']
+	MASTER_NODE_PORT=data['master_node']['ssh_port']
 	output=""
 
 	client = paramiko.SSHClient()

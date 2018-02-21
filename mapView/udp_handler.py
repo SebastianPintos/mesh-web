@@ -22,7 +22,7 @@ class UdpPackageParser:
         type = jsonpkg['type']
         ip = jsonpkg['ip']
         timestamp = jsonpkg['timestamp']
-        
+
         value = self._get_value(jsonpkg)
 
         return UdpPackage(type, ip, timestamp, value)
@@ -54,7 +54,13 @@ class UdpListener:
 
 # Además, inicializar un deamon
 def udp_handler_daemon():
-    udpListener = UdpListener("0.0.0.0", 5005)
+    with open('mapView/config.json') as confi:
+        data = json.load(confi)
+
+    bind_to = data['server']['udp_bind_to']
+    udp_port = data['server']['udp_port']
+
+    udpListener = UdpListener(bind_to, udp_port)
     d = threading.Thread(target=udpListener.listen, name='listener')
     d.setDaemon(True)
     d.start()

@@ -6,9 +6,12 @@ def get_nodes():
     return Node.objects.all()
 
 def get_json_server_status():
-    MASTER_NODE_PK = '10.10.5.5' #TODO: cambiar
-    masterNode = Node.objects.get(pk = MASTER_NODE_PK).node_states
+    with open('mapView/config.json') as confi:
+        data = json.load(confi)
+    MASTER_NODE_PK = data['masterNode']['mesh_ip']
     
+    masterNode = Node.objects.get(pk = MASTER_NODE_PK).node_states
+
     if (masterNode == 'ROJO'):
         return json.dumps({"status":"down"})
     else:
