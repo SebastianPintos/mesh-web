@@ -1,5 +1,6 @@
 # Created by https://www.gitignore.io/api/pycharm+all,sublimetext
 
+
 ### PyCharm+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
@@ -102,6 +103,8 @@ __pycache__/
 local_settings.py
 db.sqlite3
 media
+mapView/migrations/0*
+mapView/migrations/__pycache__/
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
