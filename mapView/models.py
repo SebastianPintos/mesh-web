@@ -15,7 +15,7 @@ class Node(models.Model):
         (amarillo, 'AMARILLO'),
         (rojo, 'ROJO')
     )
-    node_states = models.CharField(max_length=1, choices=STATES, default=2)
+    node_states = models.CharField(max_length=20, choices=STATES, default=2)
 
     ubiquity_unify_outdoor_plus = 0
     raspberry_pi_3 = 1
@@ -25,7 +25,7 @@ class Node(models.Model):
         (raspberry_pi_3, 'RASPBERRY')
     )
 
-    node_hardware = models.CharField(max_length=1, choices=STATES2, default='UBIQUITY')
+    node_hardware = models.CharField(max_length=20, choices=STATES2, default='UBIQUITY')
 
 
 class Location(models.Model):
@@ -36,12 +36,12 @@ class Location(models.Model):
 class NodeLogCurrentRecords(models.Model):
     record_node = models.ForeignKey(Node, on_delete=models.CASCADE)
     record_date = models.DateTimeField(auto_now_add=True)
-    record_electric_current = models.DecimalField(max_digits=5, decimal_places=3)
+    record_electric_current = models.DecimalField(max_digits=10, decimal_places=8)
 
 class NodeLogTemperatureRecords(models.Model):
     record_node = models.ForeignKey(Node, on_delete=models.CASCADE)
     record_date = models.DateTimeField(auto_now_add=True)
-    record_temperature = models.DecimalField(max_digits=5, decimal_places=2)
+    record_temperature = models.DecimalField(max_digits=10, decimal_places=8)
 
 class UdpPackage:
     def __init__(self, type, ip, timestamp, values):
