@@ -1,5 +1,6 @@
 from mapView.models import Node
-
+from datetime import datetime, timedelta
+import pytz
 
 class LightChangesAnalizer:
     # Al comenzar, trae los cambio de la base de datos y los gaurda en memoria
@@ -41,6 +42,26 @@ class LightChangesAnalizer:
 
         ip = udp_package.ip
         amperage = udp_package.values
-        
+
         print("El amperaje es: ", amperage)
         print("Lo que devuelve el metodo es: ", self.__compare_node_states(amperage, ip))
+
+    def __analyze_living_arduino(self):
+        for node in self.nodes:
+            if(self.__has_expired(node)):
+                self.__save_changes(node.node_ip, "VIOLETA")
+
+    def __has_expired(self, node):
+        expected_time = timedelta(minutes=1)
+
+        utc=pytz.UTC
+
+        actual_date = datetime.now()
+        node_date = NodeLogCurrentRecords.objects.filter(record_node = node).last().record_date
+
+        actual_date = actual_date.replace(tzinfo=utc)
+        node_date = node_date.replace(tzinfo=utc)
+
+        difference = actual_date - node_date
+
+        return difference > expected_time

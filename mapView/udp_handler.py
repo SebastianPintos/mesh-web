@@ -48,7 +48,7 @@ class UdpListener:
             udp_package = self.parser.parse_raw_data(data.decode())
             print(udp_package.type)
             self.analyzer.analyze_data(udp_package) #analizo el paquete
-#            self.logger.log_pkg(udp_package)#Logeo paquete
+            self.logger.log_pkg(udp_package)#Logeo paquete
             self.saver.save_pkg(udp_package)
 
 
