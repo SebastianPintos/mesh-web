@@ -1,4 +1,4 @@
-#NODO 10.10.5.5
+#NODO 10.10.5.4
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 python /root/NodoCliente.py > /dev/null

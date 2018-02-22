@@ -16,9 +16,9 @@ config telnet
 	option 'bindto' '0.0.0.0'
 	option 'timeout' '600'
 
-config olsrv2
-	list 'lan' 'fd00::/64'
-	list 'lan' '10.10.5.1/24'
+#config olsrv2
+#	list 'lan' 'fd00::/64'
+#	list 'lan' '10.10.5.1/24'
 
 config interface
 	option 'ifname' 'loopback'

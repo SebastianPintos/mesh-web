@@ -1,7 +1,7 @@
 #include <SPI.h>        
 #include <TimerOne.h>
 #include <Ethernet2.h>
-
+#include <avr/wdt.h>
 
 int sensor0Value = 0; 
 int sensor0outputValue = 0;
@@ -25,10 +25,13 @@ const int targetPort = 8888;
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 boolean sendPackageFlag = false;
+int retries=0;
 
 void setup() {
   Serial.begin(9600);
   pinMode(2, INPUT_PULLUP);
+  pinMode(4,OUTPUT);
+  digitalWrite(4,HIGH);
   Serial.println("\n/////////Iniciando/////////\n");
   //DEBUG MODE saltea conexion para probar mediciones
   boolean debugMode = !digitalRead(2);
@@ -52,6 +55,15 @@ void callback()
   sendPackageFlag=true;
 }
 
+void softwareReset( uint8_t prescaller) {
+  // start watchdog with the provided prescaller
+  wdt_enable( prescaller);
+  // wait for the prescaller time to expire
+  // without sending the reset signal by using
+  // the wdt_reset() method
+  while(1) {}
+}
+
 void loop() {
   // si flag true, send temppkg
  if(sendPackageFlag == true)
@@ -59,7 +71,11 @@ void loop() {
     sendPackage(preparePackage(0));
     sendPackage(preparePackage(1));
     sendPackageFlag = false;
-    } 
+    }
+  if(retries>9){
+    Serial.println("Reiniciando...");
+    softwareReset( WDTO_60MS);
+    }   
 }
 
 
@@ -82,7 +98,10 @@ void sendPackage(String message){
     boolean bBegin = Udp.beginPacket(targetIP, targetPort); 
     Serial.println(boolToString2(bBegin)+"\n");
     if(bBegin==false){
-      return;}
+      retries+=1;
+      Serial.println("Error... Quedan " +String(10-retries)+" \nintentos antes del reinicio automatico");
+      return;
+      }
       
     //Armando Mensaje
    // String sensorString = boolToString(sensorVal);
@@ -93,11 +112,15 @@ void sendPackage(String message){
     
     Serial.println(boolToString2(bWrite)+"\n");
     if(bWrite==false){
+      retries+=1;
+       Serial.println("Error... Quedan " +String(10-retries)+" \nintentos antes del reinicio automatico");
       return;}
     Serial.print("3_Enviando... ");
     boolean bEnd = Udp.endPacket();
     Serial.println(boolToString2(bEnd)+"\n");
     if(bEnd==false){
+      retries+=1;
+      Serial.println("Error... Quedan " +String(10-retries)+" \nintentos antes del reinicio automatico");
       return;}
     Serial.println(message+"\n");
     
