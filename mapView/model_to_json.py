@@ -8,8 +8,8 @@ def get_nodes():
 def get_json_server_status():
     with open('mapView/config.json') as confi:
         data = json.load(confi)
-    MASTER_NODE_PK = data['masterNode']['mesh_ip']
-    
+    MASTER_NODE_PK = data['master_node']['mesh_ip']
+
     masterNode = Node.objects.get(pk = MASTER_NODE_PK).node_states
 
     if (masterNode == 'ROJO'):
