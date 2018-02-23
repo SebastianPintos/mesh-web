@@ -1,5 +1,4 @@
 var requestInfo =  function(){
-	var url = "http://" + ip + ":"+ port;
 
 	$.when($.ajax('http://localhost:8000/mapView/get-info')). //Request a Django
 	then(response => parseStringToJSONObject(response)). //Response con JSON String a Object

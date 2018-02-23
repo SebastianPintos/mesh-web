@@ -30,7 +30,7 @@ def retrieve_info():
 	client = paramiko.SSHClient()
 	client.load_system_host_keys()
 	client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-	client.connect(MASTER_NODE_IP, MASTER_NODE_PORT, username='root', password='root', timeout=10)
+	client.connect(MASTER_NODE_IP, MASTER_NODE_PORT, username='root', password='ungsmsmolsrd2', timeout=10)
 
 	stdin, stdout, stderr = client.exec_command("echo \"/netjsoninfo filter graph ipv4_0\" | nc 127.0.0.1 9001")# a properties
 
@@ -66,7 +66,7 @@ def save_changes(active_ips):
 		if (node.node_ip not in active_ips):
 			node.node_states = 'ROJO'
 		if (node.node_ip in active_ips and node.node_states == 'ROJO'):
-			node.node_states = 'AMARILLO'
+			node.node_states = 'VIOLETA'
 
 	#Esto no debería ir acá
 	for node in nodes:

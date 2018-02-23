@@ -20,6 +20,7 @@ var Drawer = function(canvasMap){
 		switch (nodeState){
 			case 'VERDE': return greenIcon; break;
 			case 'AMARILLO': return yellowIcon; break;
+			case 'VIOLETA': return violetIcon; break;
 			default: return redIcon;
 		}
 	}

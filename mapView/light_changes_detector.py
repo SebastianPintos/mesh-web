@@ -1,6 +1,6 @@
-from mapView.models import Node
+from mapView.models import Node, NodeLogCurrentRecords
 from datetime import datetime, timedelta
-import pytz
+import pytz, threading, time
 
 class LightChangesAnalizer:
     # Al comenzar, trae los cambio de la base de datos y los gaurda en memoria
@@ -13,20 +13,26 @@ class LightChangesAnalizer:
 
         self.nodes = Node.objects.all()
 
+        d = threading.Thread(target=self.__analyze_living_arduino, name='listener')
+        d.setDaemon(True)
+        d.start()
+
     def __save_changes(self, n_ip, node_status):
         # al detectar un cambio los guarda en la base de datos
         Node.objects.filter(node_ip=n_ip).update(node_states=node_status)
 
     # comparo los nodos en memoria, si detecto un cambio, aviso el cambio (Y despues que hago con los cambios? (los
     # guardo a penas lo reconozco?))
+    # actual_state == self.TURNED_OFF_LIGHT and
+    # actual_state == self.TURNED_ON_LIGHT and
     def __compare_node_states(self, light_amperage, n_ip):
         actual_state = self.nodes.get(node_ip=n_ip).node_states
         # Si el estado difiere del actual_state (debería haber un tiempo) cambiar
-        if actual_state == self.TURNED_ON_LIGHT and not self.__is_turned_on(light_amperage):
+        if  not self.__is_turned_on(light_amperage):
             # Avisar de (pasar a amarillo)
             self.__save_changes(n_ip, self.TURNED_OFF_LIGHT)
             return "AMARILLO"
-        if actual_state == self.TURNED_OFF_LIGHT and self.__is_turned_on(light_amperage):
+        if  self.__is_turned_on(light_amperage):
             # Avisar de (pasar a verde)
             self.__save_changes(n_ip, self.TURNED_ON_LIGHT)
             return "VERDE"
@@ -47,9 +53,13 @@ class LightChangesAnalizer:
         print("Lo que devuelve el metodo es: ", self.__compare_node_states(amperage, ip))
 
     def __analyze_living_arduino(self):
-        for node in self.nodes:
-            if(self.__has_expired(node)):
-                self.__save_changes(node.node_ip, "VIOLETA")
+        while 1:
+            for node in self.nodes:
+                if(node.node_ip != '10.10.5.5'):
+                    if(self.__has_expired(node)):
+                        if(node.node_states != self.POWEROFF_NODE):
+                            self.__save_changes(node.node_ip, "VIOLETA")
+            time.sleep(60)
 
     def __has_expired(self, node):
         expected_time = timedelta(minutes=1)
@@ -59,9 +69,11 @@ class LightChangesAnalizer:
         actual_date = datetime.now()
         node_date = NodeLogCurrentRecords.objects.filter(record_node = node).last().record_date
 
+
         actual_date = actual_date.replace(tzinfo=utc)
         node_date = node_date.replace(tzinfo=utc)
 
         difference = actual_date - node_date
+        print("La difrencia con el último registro de ", node.node_ip, " es: ", difference)
 
         return difference > expected_time
