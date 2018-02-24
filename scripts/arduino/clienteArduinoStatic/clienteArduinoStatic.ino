@@ -5,11 +5,11 @@
 
 int sensor0Value = 0; 
 int sensor0outputValue = 0;
-//MAC Address que usara el arduino (asegurarse de que sea unica)
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+//MAC Address que usara el arduino (asegurarse de que sea unica)1A-5C-69-6D-36-60
+byte mac[] = { 0x1A, 0x5C, 0x69, 0x6D, 0x36, 0x60 };
 
 //the IP address is dependent on your network
-IPAddress ip(192, 168, 1, 100);
+IPAddress ip(192, 168, 1, 99);
 //the dns server ip
 IPAddress dnServer(192, 168, 1, 1);
 // the router's gateway address:
@@ -28,28 +28,38 @@ boolean sendPackageFlag = false;
 int retries=0;
 
 void setup() {
-  Serial.begin(9600);
   pinMode(2, INPUT_PULLUP);
-  pinMode(4,OUTPUT);
-  digitalWrite(4,HIGH);
-  Serial.println("\n/////////Iniciando/////////\n");
   //DEBUG MODE saltea conexion para probar mediciones
   boolean debugMode = !digitalRead(2);
   if (debugMode){
     debug();}
+  else{
+    Serial.begin(9600);
+    Serial.println("\n/////////Iniciando/////////\n");
+    Serial.println("\n/////////Inicializando Timers/////////\n");  
+    Timer1.initialize(1000000);         // initialize timer1, and set a 1/2 second period
+    Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
+    initializeNetwork();
+    }
+  
+}
+
+boolean initializeNetwork(){
+  Udp.stop();
   Serial.print("Iniciando Ethernet...");
   Ethernet.begin(mac, ip, dnServer, gateway, subnet);
   Serial.println("listo\n");
   //Necesario inicializar el puerto antes de poder transmitir
   Serial.print("Preparando Puerto UDP...");
-  boolean bInit=Udp.begin(targetPort);
+  boolean bInit=Udp.begin(targetPort); 
   Serial.println(boolToString2(bInit)+"\n");     
   printIPAddress();
-  Serial.println("\n/////////Inicializando Timers/////////\n");  
-  Timer1.initialize(1000000);         // initialize timer1, and set a 1/2 second period
-  Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
   Serial.println("\n/////////Iniciado/////////\n"); 
-}
+  return bInit;
+  }
+
+
+
 void callback()
 {
   sendPackageFlag=true;
@@ -92,7 +102,13 @@ String preparePackage(int typeOfPackage){
   }
 
 void sendPackage(String message){
-    //Comienza a armar el paquete
+    boolean init=initializeNetwork();
+   /* if(init==false){
+      retries+=1;
+      Serial.println("Error... Quedan " +String(10-retries)+" \nintentos antes del reinicio automatico");
+      return;
+      }
+    //Comienza a armar el paquete*/
     Serial.print("1_Iniciando Paquete...");
     //IP o Hostname del servidor, reemplazar por targetHostname para usar hostname
     boolean bBegin = Udp.beginPacket(targetIP, targetPort); 
