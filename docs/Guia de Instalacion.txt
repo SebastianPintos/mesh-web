@@ -1,0 +1,23 @@
+------------------------------------- "Guía de Instalación/Configuracion de Servidor Web Mesh" ----------------------------------------------
+
+Antes de comezar: Leer los requisitos del sistema
+
+1) Configurar la base de datos a partir de la guia de configuración de la base de datos
+
+----------------------------------------- "Configuración de la conectividad con la red Mesh" ----------------------------------------------
+
+2) Todo los aspectos de conectividad por parte del servidor pueden ser configurados desde el archico "config.json"
+	Desde allí se podrán ajustar aspectos tales como la ip del "Nodo Maestro", el puerto ssh, etc. (Aclaración, este archivo debe ser modificado
+en caso de que alguna de las configuraciones preestablecidas cambie. Una mala configuración de este archivo puede llevar al no funcionamiento de la 
+web app)
+
+3) En el primer arranque, deben ser ejecutados los comandos "python3 manage.py makemigrations" y "python3 manage.py migrate" para el 'set up' de la 
+base de datos. 
+
+4) Para cargar los datos de la geolocalización de los nodos, se debe ejecutar el comando "sh initdb.sh"
+
+5) Por último, para iniciar el servidor, se debe ejecutar el comando "python3 manage.py runserver 0.0.0.0" (IMPORTANTE: Se desaconseja totalmente 
+cambiar el puerto por defecto de django. Si es de vital importancia cambiarlo, también se debe tener en cuenta el cambio de los request provenientes
+del front-end, precisamente del archivo requesInfo.js. Ante cualquier duda, ponganse en contacto con los desarrolladores)
+
+

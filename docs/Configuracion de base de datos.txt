@@ -1,0 +1,13 @@
+-------------------------------------------------------------- Configuración de la base de datos-----------------------------------
+1) Ingresar con el usuario root a la base de datos
+2) Crear una nueva base de datos llamada 'web_mesh' (sin las comillas) ejecutando la sentencia "CREATE DATABASE webMesh CHARACTER SET utf8;"
+3) Crear un nuevo usuario con el nombre 'mesh-database' y la contraseña 'd$ZBV9s$' mediante la sentencia CREATE USER 'mesh-database'@'localhost' IDENTIFIED BY 'd$ZBV9s$';
+4) Brindar correspondientes al usuario. Ejecutar el comando "GRANT ALL PRIVILEGES ON *.* TO 'mesh-database'@'localhost'"
+5) (Si se usan configuraciones distintas) Cambiar en el archivo webMesh/settings.py las configuraciones que se hayan realizado
+
+
+
+ATENCION: Es áltamente recomendable cambiar cambiar la contraseña del usuario de la base de datos indicada anteriormente.
+ADVERTENCIA: Los cambios realizados en los parámetros en labase de datos (Ej. Nombre de Usuario, Nombre de la base de datos, Contraseña) también deben ser reflejados en los archivos de configuración de Django
+
+

@@ -1,0 +1,21 @@
+---------------------------------------------------- Requerimiento del sistema---------------------------------------------------
+
+- Linux 64 bits
+- Conexión a Internet
+- Puerto Ethernet disponible asociado con una interfaz estática
+- OpenSSH
+- Python3 y Pip3
+- Librerías de Python: Django 2.0, Paramiko
+- libmysqlclient20
+- MySQL (versión superior a 5.5)
+
+
+-Cable de red de 2 metros
+-----------------------------------------------------------------------------------------------------------------------------------
+
+ATENCIÓN. Se requiere Python 3 para la utilización de la aplicación web!
+
+Para poder utilizar el framework Django, se debe  instalar desde el administrador de paquetes de Python, pip.
+
+Para ello, ejecutar el comando pip3 install django
+

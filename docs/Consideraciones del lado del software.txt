@@ -1,0 +1,13 @@
+Este documento pretende advertir algunas de las situaciones que se deben tener en consideración para el correcto funcionamiento del sistema.
+
+1) Si se pretende reiniciar la webapp del server 10.10.10.6 mediante ssh, se deberá inicializar la misma con el comando "nohup python3 manage.py
+runserver 0.0.0.0:8000 &" para que la aplicación quede corriendo en segundo plano y no se apague al cerrar la sesión ssh
+
+2) Si se pretende cortar la ejecución del script "NodoMaster.py" o "NodoCliente.py", favor de acordarse de reinciar el router para que estas
+aplicaciones se vuelvan a iniciar.
+
+3) Para conectarse desde FortiClient a la vpn de la Municipalidad, utilizar el usuario "ungs", la contraseña "ungs123!", el puerto 8443 y el server 
+"sslvpn.msm.gov.ar". El servidor dedicado a la web app se encuentra en la 10.10.10.6. Para acceder a la web app, desde el navegador tipear 
+"10.10.10.6:8000/mapView/map"
+
+

@@ -55,10 +55,9 @@ class LightChangesAnalizer:
     def __analyze_living_arduino(self):
         while 1:
             for node in self.nodes:
-                if(node.node_ip != '10.10.5.5'):
-                    if(self.__has_expired(node)):
-                        if(node.node_states != self.POWEROFF_NODE):
-                            self.__save_changes(node.node_ip, "VIOLETA")
+                if(self.__has_expired(node)):
+                    if(node.node_states != self.POWEROFF_NODE):
+                        self.__save_changes(node.node_ip, "VIOLETA")
             time.sleep(60)
 
     def __has_expired(self, node):
