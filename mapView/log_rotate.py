@@ -27,9 +27,9 @@ class Logger:
 class UdpPackageLogger:
 
     def __init__(self):
-        self.pkg_map = {0: Logger('current', '/home/lucas/Mesh/log/current.csv', 'd'),
-                        1: Logger('ardu_temp', '/home/lucas/Mesh/log/ardu_temp.csv', 'd'),
-                        2: Logger('node_temp', '/home/lucas/Mesh/log/node_temp.csv', 'd')}
+        self.pkg_map = {0: Logger('current', 'log/current.csv', 'd'),
+                        1: Logger('ardu_temp', 'log/ardu_temp.csv', 'd'),
+                        2: Logger('node_temp', 'log/node_temp.csv', 'd')}
 
     def log_pkg(self, udp_pkg):
         type_pkg = udp_pkg.type

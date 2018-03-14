@@ -23,8 +23,7 @@ class LightChangesAnalizer:
 
     # comparo los nodos en memoria, si detecto un cambio, aviso el cambio (Y despues que hago con los cambios? (los
     # guardo a penas lo reconozco?))
-    # actual_state == self.TURNED_OFF_LIGHT and
-    # actual_state == self.TURNED_ON_LIGHT and
+
     def __compare_node_states(self, light_amperage, n_ip):
         actual_state = self.nodes.get(node_ip=n_ip).node_states
         # Si el estado difiere del actual_state (debería haber un tiempo) cambiar

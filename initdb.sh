@@ -27,6 +27,7 @@ clientNode4Loc.save()
 clientNode4 = Node(node_ip = '10.10.5.4', node_location=clientNode4Loc, node_states = 'ROJO', node_hardware = 'UBIQUITY')
 clientNode4.save()
 
+logM = NodeLogCurrentRecords(record_node = masterNode, record_electric_current=0)
 log1 = NodeLogCurrentRecords(record_node = clientNode1, record_electric_current=0)
 log2 = NodeLogCurrentRecords(record_node = clientNode2, record_electric_current=0)
 log3 = NodeLogCurrentRecords(record_node = clientNode3, record_electric_current=0)
