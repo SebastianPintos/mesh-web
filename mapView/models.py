@@ -28,7 +28,7 @@ class Node(models.Model):
     )
 
     node_hardware = models.CharField(max_length=20, choices=STATES2, default='UBIQUITY')
-    
+
 class Location(models.Model):
     location_lat = models.DecimalField(max_digits=11, decimal_places=7)
     location_lon = models.DecimalField(max_digits=11, decimal_places=7)
@@ -37,18 +37,11 @@ class NodeLogStateRecords(models.Model):
     record_node = models.ForeignKey(Node, on_delete=models.CASCADE)
     record_date = models.DateTimeField(auto_now_add=True)
 
-    verde = 0
-    amarillo = 1
-    rojo = 2
-    violeta= 3
-
     STATES = (
-        (verde, 'VERDE'),
-        (amarillo, 'AMARILLO'),
-        (rojo, 'ROJO'),
-        (violeta, 'VIOLETA')
+        (0, 'APAGADO'),
+        (1, 'PRENDIDO')
     )
-    node_states = models.CharField(max_length=20, choices=STATES, default=2)
+    record_node_state = models.CharField(max_length=20, choices=STATES, default=2)
 
 class NodeLogCurrentRecords(models.Model):
     record_node = models.ForeignKey(Node, on_delete=models.CASCADE)

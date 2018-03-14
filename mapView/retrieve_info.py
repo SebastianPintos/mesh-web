@@ -1,5 +1,5 @@
 import subprocess, socket, json, time, threading, paramiko
-from mapView.models import Node, Location
+from mapView.models import Node, Location, NodeLogStateRecords
 
 def json_to_object(shellOutput):
 	if isinstance(shellOutput, dict):
@@ -65,13 +65,27 @@ def save_changes(active_ips):
 	for node in nodes:
 		if (node.node_ip not in active_ips):
 			node.node_states = 'ROJO'
+			#Gaurdar el registro de los nodos comp apagado
 		if (node.node_ip in active_ips and node.node_states == 'ROJO'):
 			node.node_states = 'VIOLETA'
+			#Guardar el registro de los nodos como prendido
 
 	#Esto no debería ir acá
 	for node in nodes:
 		print (node.node_ip, " | ", node.node_states)
 		node.save()
+
+def save_node_status():
+	nodes = Node.objects.all()
+	for node in nodes:
+		if (node.node_states == 'ROJO'):
+		#Guardar como apagado
+			record = NodeLogStateRecords(record_node=node, record_node_state = 'APAGADO')
+			record.save()
+		else:
+		#guardar como prendido
+			record = NodeLogStateRecords(node, 'PRENDIDO')
+			record.save()
 
 def main(): #debería ser main
 	while 1:
@@ -85,6 +99,9 @@ def main(): #debería ser main
 			#Avisarle al modelo que el Nodo Maestro está caído
 			#Para ello, le decimos que todos los nodos de la red están cídos, incluyendo al NodoMaestro
 			save_changes([])
+			#Guardar el registro como apagado
+
+		save_node_status()
 		time.sleep(15)
 
 
