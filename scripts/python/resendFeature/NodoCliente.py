@@ -2,22 +2,15 @@ from socket import *
 import time,traceback
 import json
 import datetime
+import informationPrinter as Printer
 
 IP_LOCAL_NODE = '10.10.5.1'
 UDP_PORT_Arduino = 8888
 IP_NODO_MASTER= '10.10.5.5'
 PUERTO_NODO_MASTER= 5005
 
-def add_data(json_object):
-    json_object['ip'] = get_mesh_ip()
-    json_object['timestamp'] = get_timestamp()
-
-def get_timestamp():
-    ts = time.time()
-    return datetime.datetime.fromtimestamp(ts).isoformat()
-
-def get_mesh_ip():
-    return IP_LOCAL_NODE
+list_stampers = [Printer.TimestampStamper(), Printer.IpStamper()]
+json_stamper = Printer.InformationStamper(list_stampers)
 
 def enviarUDP(IP,port,message):
 
@@ -31,7 +24,6 @@ def enviarUDP(IP,port,message):
 
 
 def escucharMensajesArduino():
-    print("Abriendo Socket...")
 
     try:
         sock = socket(AF_INET, SOCK_DGRAM)
@@ -47,7 +39,6 @@ def escucharMensajesArduino():
     print("listo")
 
     while True:
-        print("\n/////Escuchando Arduino/////\n")
         try:
             data,addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
         except:
@@ -57,12 +48,11 @@ def escucharMensajesArduino():
         # json decode
         json_data = json.loads(data.decode('utf-8'))
         # Ponerla la ip y el timestamp
-        add_data(json_data)
+        json_stamper.stamp_info(json_data)
         # Volver a codificar
         to_send = json.dumps(json_data)
         print(to_send)
         print("\nEnviando a NodoMaster...")
-        print("\n/////FIN Escuchando Arduino/////")
         enviarUDP(IP_NODO_MASTER,PUERTO_NODO_MASTER,to_send)
 
 print("\n//////////NODO CLIENTE/////////\n")
