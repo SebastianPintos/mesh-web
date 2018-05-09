@@ -2,7 +2,7 @@ from socket import *
 import time,traceback
 import json
 import datetime
-import informationPrinter as Printer
+import informationStamper as Stamper
 import routeToHost
 
 IP_LOCAL_NODE = '10.10.5.1'
@@ -10,8 +10,8 @@ UDP_PORT_Arduino = 8888
 IP_NODO_MASTER= '10.10.5.5'
 PUERTO_NODO_MASTER= 5005
 
-list_stampers = [Printer.TimestampStamper(), Printer.IpStamper()]
-json_stamper = Printer.InformationStamper(list_stampers)
+list_stampers = [Stamper.TimestampStamper(), Stamper.IpStamper()]
+json_stamper = Stamper.InformationStamper(list_stampers)
 
 route_to_host = routeToHost.RouteEntablishedDetector(IP_NODO_MASTER)
 
@@ -19,7 +19,7 @@ def enviarUDP(IP,port,message):
 
     if route_to_host.is_entablished_route():
         sock = socket(AF_INET, SOCK_DGRAM)
-        sock.sendto(message.encode('utf-8'), (IP, port))
+        sock.sendto(message, (IP, port))
     else:
         print("No hay ruta al host")
 
