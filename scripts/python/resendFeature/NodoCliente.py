@@ -9,7 +9,7 @@ from PackagesResender import *
 
 IP_LOCAL_NODE = '10.10.5.1'
 UDP_PORT_Arduino = 8888
-IP_NODO_MASTER= '127.0.0.1'
+IP_NODO_MASTER= '192.168.1.35'
 PUERTO_NODO_MASTER= 5005
 BUFFER_FILE_NAME = "bufferFile.txt"
 
@@ -30,8 +30,8 @@ def enviarUDP(message):
     if route_to_host.is_entablished_route():
         global need_to_send_buffer
         if (need_to_send_buffer): #TODO Que pasa si se corta la conexión justo cuando estoy reenviando
-            need_to_send_buffer
-            bufferResender = PackageResender(BUFFER_FILE_NAME, udpSender)
+            fileLineReader = FileLineReader(BUFFER_FILE_NAME)
+            bufferResender = PackageResender(fileLineReader, udpSender)
             bufferResender.resend_all_buffered_packets()
             need_to_send_buffer = False
 

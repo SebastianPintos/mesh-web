@@ -31,7 +31,8 @@ class FileLineReader:
 
     def getLine(self):
         line = self.lines[self.index]
-        self.index = self.index + 1
+        print("El index es", self.index , "y la longitud del array es ", len(self.lines) -1 )
         if self.is_end_of_file():
             return None
+        self.index = self.index + 1
         return line

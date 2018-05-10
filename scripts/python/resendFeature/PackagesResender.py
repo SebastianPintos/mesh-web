@@ -8,4 +8,4 @@ class PackageResender:
         while (not self.line_reader.is_end_of_file()):
             udpPackage = self.line_reader.getLine()
             print(udpPackage)
-            udpSender.send(udpPackage)
+            self.udpSender.send(udpPackage)
