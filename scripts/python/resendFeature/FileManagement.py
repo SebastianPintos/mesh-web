@@ -1,3 +1,5 @@
+import os
+
 class FileWritter:
 
     def __init__(self, fileName):
@@ -18,7 +20,7 @@ class FileReader:
         file.close()
         return toRet
 
-class FileLineReader:
+class FileLineReader: #TODO Al recuperar las lineas del arhivo, hay que filtrar el \n
 
     def __init__(self, fileName):
         self.fileName = fileName
@@ -36,3 +38,11 @@ class FileLineReader:
             return None
         self.index = self.index + 1
         return line
+
+class FileDeletor:
+
+    def __init__(self, fileName):
+        self.file = fileName
+
+    def delete(self):
+        os.remove(self.file)
