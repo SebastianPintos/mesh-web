@@ -84,7 +84,7 @@ def save_node_status():
 			record.save()
 		else:
 		#guardar como prendido
-			record = NodeLogStateRecords(node, 'PRENDIDO')
+			record = NodeLogStateRecords(record_node=node, record_node_state = 'PRENDIDO')
 			record.save()
 
 def main(): #debería ser main

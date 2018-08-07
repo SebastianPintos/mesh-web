@@ -1,10 +1,10 @@
 var requestInfo =  function(){
 
-	$.when($.ajax('http://localhost:8000/mapView/get-info')). //Request a Django
+	$.when($.ajax('http://10.10.10.6:8000/mapView/get-info')). //Request a Django
 	then(response => parseStringToJSONObject(response)). //Response con JSON String a Object
 	done(setOfNodes => drawer.draw(setOfNodes)); //Dibujo los nodos
 
-	$.when($.ajax('http://localhost:8000/mapView/mesh-status')).
+	$.when($.ajax('http://10.10.10.6:8000/mapView/mesh-status')).
 	then(resp => parseStringToJSONObject(resp)).
 	then(serverStatus => drawer.alertChanges(serverStatus.status))
 }
