@@ -1,4 +1,6 @@
 import configparser
+import smtplib
+from email.message import EmailMessage
 
 class MailSender:
     def __init__(self, config_path):
@@ -14,8 +16,18 @@ class MailSender:
         config = configparser.ConfigParser()
         config.read(config_path)
 
-        print(config)
         return config['DEFAULT']
 
-    def send_email(receiver_email, subject, msg):
-        pass
+    def send_email(self,receiver_email, subject, msg):
+        message = EmailMessage()
+        message.set_content(msg)
+        
+        message['Subject'] = subject
+        message['From'] = self.email
+        message['To'] = receiver_email
+        
+        s = smtplib.SMTP(self.server_smtp, self.port_smtp)
+        s.starttls()
+        s.login(self.email, self.password)
+        s.send_message(message)
+        s.quit()
