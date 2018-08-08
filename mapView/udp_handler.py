@@ -35,7 +35,7 @@ class UdpListener:
         self.udp_ip = udp_ip
         self.udp_port = udp_port
         self.analyzer = LightChangesAnalizer() # Esto no es responsabilidad de UD
-        self.logger = UdpPackageLogger()
+        #self.logger = UdpPackageLogger()
         self.saver = UdpPackageSaver()
 
     def listen(self):
@@ -48,7 +48,7 @@ class UdpListener:
             udp_package = self.parser.parse_raw_data(data.decode())
             print(udp_package.type)
             self.analyzer.analyze_data(udp_package) #analizo el paquete
-            self.logger.log_pkg(udp_package)#Logeo paquete
+           # self.logger.log_pkg(udp_package)#Logeo paquete
             self.saver.save_pkg(udp_package)
 
 
