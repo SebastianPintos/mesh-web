@@ -10,7 +10,6 @@ class MailSender:
         self.email = config['email']
         self.password = config['password']
 
-        print(self.email, self.password, self.port_smtp, self.server_smtp)
 
     def read_config_file(self, config_path):
         config = configparser.ConfigParser()
@@ -18,7 +17,7 @@ class MailSender:
 
         return config['DEFAULT']
 
-    def send_email(self,receiver_email, subject, msg):
+    def send_mail(self,receiver_email, subject, msg):
         message = EmailMessage()
         message.set_content(msg)
         
