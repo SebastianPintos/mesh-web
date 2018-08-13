@@ -1,6 +1,8 @@
 import subprocess
-import schedule, time, json
+import schedule, time, json, pytz
+from datetime import datetime, timedelta
 from mapView.mail_sender import MailSender
+from mapView.models import NodeLogCurrentRecords
 
 def detect_connection(ip_address, intents):
     procces = subprocess.run(['ping', '-c', str(intents), ip_address], shell=False, stdout=subprocess.PIPE)
@@ -10,16 +12,22 @@ def print_traceroute(ip_address):
     procces = subprocess.run(['traceroute', ip_address], shell=False, stdout=subprocess.PIPE)
     return str(procces.stdout)
 
-def is_time_exceeded(node ,exceeded_time):
-    last_register = NodeLogCurrentRecords.objects.filter(record_node = node).last().record_date
-    actual_date = datetime.now()
-    
-    actual_date = actual_date.replace(tzinfo=utc)
-    last_register = last_register.replace(tzinfo=utc)   #FIXME Si confiaramos en los estados, esto debería preguntar el estado, y si es violeta, directamente notificarlo
-    
-    difference = last_register - node_date
-    
-    print(difference)
+def is_time_exceeded(node, excedeed_time): 
+        expected_time = timedelta(minutes=excedeed_time)
+
+        utc=pytz.UTC
+
+        actual_date = datetime.now()
+        node_date = NodeLogCurrentRecords.objects.filter(record_node = node).last().record_date
+
+
+        actual_date = actual_date.replace(tzinfo=utc)
+        node_date = node_date.replace(tzinfo=utc)
+
+        difference = actual_date - node_date
+        print("La difrencia con el último registro de ", node.node_ip, " es: ", difference)
+
+        return difference > expected_time
 
 def main():
     mail_sender = MailSender("../email_settings.ini")
@@ -32,10 +40,13 @@ def main():
         mail_sender.send_mail("lucas.addisi@gmail.com", "Test", print_traceroute("www.google.com"))#TODO Reemplazar Data en detect_connection
     else:
         print("Se detectó conectividad")
+        
+        
+    
 
 
 def scan_connectivity_job():
-    schedule.every().day.at("12:33c").do(main)
+    schedule.every().day.at("12:33").do(main)
     while True:
         schedule.run_pending()
         time.sleep(1)
