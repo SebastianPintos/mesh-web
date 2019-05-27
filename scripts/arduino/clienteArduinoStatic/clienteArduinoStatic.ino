@@ -32,6 +32,7 @@ void setup() {
   pinMode(2, INPUT_PULLUP);
   //DEBUG MODE saltea conexion para probar mediciones
   boolean debugMode = !digitalRead(2);
+  Serial.println("v1.0")
   if (debugMode){
     debug();}
   else{
