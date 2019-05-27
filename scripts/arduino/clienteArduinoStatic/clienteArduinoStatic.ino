@@ -1,6 +1,6 @@
 #include <SPI.h>        
 #include <TimerOne.h>
-#include <Ethernet2.h>
+#include <Ethernet.h>
 #include <avr/wdt.h>
 
 int sensor0Value = 0; 
@@ -21,13 +21,14 @@ IPAddress targetIP(192, 168, 1, 1);
 // Hostname de destino (opcional)
 const char* targetHostname = "hostname"; 
 // puerto al cual se envia el paquete  
-const int targetPort = 8888;      
+const int targetPort = 8888;
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 boolean sendPackageFlag = false;
 int retries=0;
 
 void setup() {
+  wdt_enable(WDTO_8S);
   pinMode(2, INPUT_PULLUP);
   //DEBUG MODE saltea conexion para probar mediciones
   boolean debugMode = !digitalRead(2);
@@ -58,20 +59,9 @@ boolean initializeNetwork(){
   return bInit;
   }
 
-
-
 void callback()
 {
   sendPackageFlag=true;
-}
-
-void softwareReset( uint8_t prescaller) {
-  // start watchdog with the provided prescaller
-  wdt_enable( prescaller);
-  // wait for the prescaller time to expire
-  // without sending the reset signal by using
-  // the wdt_reset() method
-  while(1) {}
 }
 
 void loop() {
@@ -84,8 +74,12 @@ void loop() {
     }
   if(retries>9){
     Serial.println("Reiniciando...");
-    softwareReset( WDTO_60MS);
-    }   
+    while(1){}
+    }
+
+    Serial.println("Se ha reseteado el WatchDog");
+    wdt_reset();
+  
 }
 
 
